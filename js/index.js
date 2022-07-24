@@ -1,15 +1,8 @@
-const diasDeSemana = ["Domingo","Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" ];
-// View
-// const spanTime = document.getElementById("time");
-// const spanDay = document.getElementById("week-day");
-// const nsInfo = document.getElementById("ns-info");
-// const snInfo = document.getElementById("sn-info");
-// const viaInfo = document.getElementById("via-info");
 
 // Datos
+const diasDeSemana = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
 const startDate = document.getElementById("start-date");
 const endDate = document.getElementById("end-date");
-
 
 let currentDay;
 let simulacionDias;
@@ -46,8 +39,8 @@ const semana = {
     },
     surNorte: {
         0: {
-            inicio: "06:0",
-            finaliza: "09:0",
+            inicio: "6:0",
+            finaliza: "9:0",
             horario: "6:00 a.m. – 9:00 a.m",
             horas: 3,
             densidad: 117
@@ -106,25 +99,28 @@ const finDeSemana = {
 };
 
 
+//Funcion para simular trafico
+
 const simular = (e) => {
     e.preventDefault();
 
+
+    //Obtener los datos de los inputs
     let start = dayjs(startDate.value);
     let end = dayjs(endDate.value);
     let distance = (end.diff(start, 'millisecond'));
 
-
     const timerInterval = setInterval(() => {
 
+        //Calculos de tiempos
 
-
+        let x = Math.floor(Math.random() * 2) + 1;
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-
-
+        //Temporizador (Cuenta regresiva)
 
         const day = document.getElementById("day");
         const info = document.getElementById("info");
@@ -142,42 +138,49 @@ const simular = (e) => {
             timer.innerHTML = "Finalizo";
             clearInterval(timerInterval);
         } else {
+
+            //Conteo por minuto.
+
             distance -= 60000;
             start = start.add(60000, 'millisecond');
             let hora = start.hour() + ":" + start.minute();
 
-
-            console.log(hora);
-            // const x = Math.floor(Math.random() * (3 - 1) + 1);
-
-
+    
+            //Simulacion de trafico por dia de semana.
             if (currentDay >= 1 && currentDay <= 5) {
 
                 if (ruta === false) {
                     for (let i = 0; i < 3; i++) {
-                        if (hora >= semana.norteSur[i].inicio && hora <= semana.norteSur[i].finaliza) {
+                        // De norte a sur
+                        if (hora >= semana.norteSur[i].inicio && hora <= semana.norteSur[i].finaliza && (x===1)) {
 
                             cerrarRuta = (start.add(parseInt(semana.norteSur[i].horas), 'hour')).hour() + ":" + (start.add(2, 'hour')).minute();
-                            info.innerHTML = `<br/> Ruta aerea norte sur abierta a las ${hora} `;
-                            console.log(`Ruta aerea abierta a las ${hora}`);
+                            info.innerHTML = `Ruta aerea norte sur abierta a las ${hora} `;
                             ruta = true;
-
                             ObjToPrint[cont] = {
                                 sentido: "norte - sur",
                                 apertura: hora,
                                 cierre: cerrarRuta,
+                                dia: dayname,
                             }
+                            x++;
+                            toPrint(ObjToPrint[cont]);
                             break;
-                        } else if ((hora >= semana.surNorte[i].inicio && hora <= semana.surNorte[i].finaliza)) {
+
+                            // De sur a Norte
+                        } else if (hora >= semana.surNorte[i].inicio && hora <= semana.surNorte[i].finaliza  && (x ===2)) {
+
                             cerrarRuta = (start.add(parseInt(semana.surNorte[i].horas), 'hour')).hour() + ":" + (start.add(2, 'hour')).minute();
                             info.innerHTML = `Ruta aerea sur norte abierta a las ${hora}`;
-                            console.log(`<br/> Ruta aerea abierta a las ${hora}`);
                             ruta = true;
                             ObjToPrint[cont] = {
-                                sentido: "norte - sur",
+                                sentido: "sur - norte",
                                 apertura: hora,
                                 cierre: cerrarRuta,
+                                dia: dayname,
                             }
+                            x++;
+                            toPrint(ObjToPrint[cont]);
                             break;
                         }
                     }
@@ -186,11 +189,8 @@ const simular = (e) => {
                 else {
 
                     if (hora === cerrarRuta) {
-
                         info.innerHTML = `Ruta aerea cerrada a las ${hora}`;
                         despejarRuta = (start.add(2, 'hour')).hour() + ":" + (start.add(2, 'hour')).minute();
-                        toPrint(ObjToPrint[cont]);
-
                     }
 
                     if (hora === despejarRuta) {
@@ -200,33 +200,40 @@ const simular = (e) => {
                     }
 
                 }
-//-------------------------------------------------- WKEEKEND --------------------------------------------------
+                //-------------------------------------------------- Fines de semana --------------------------------------------------
             } else {
 
                 if (ruta === false) {
                     for (let i = 0; i < 2; i++) {
-                        if (hora >= finDeSemana.norteSur[i].inicio && hora <= finDeSemana.norteSur[i].finaliza) {
+                        //De norte a sur
+                        if (hora >= finDeSemana.norteSur[i].inicio && hora <= finDeSemana.norteSur[i].finaliza && (x===1)) {
 
                             cerrarRuta = (start.add(parseInt(finDeSemana.norteSur[i].horas), 'hour')).hour() + ":" + (start.add(2, 'hour')).minute();
                             info.innerHTML = `Ruta aerea norte sur abierta a las ${hora} `;
                             console.log(`Ruta aerea abierta a las ${hora}`);
                             ruta = true;
+
                             ObjToPrint[cont] = {
                                 sentido: "norte - sur",
                                 apertura: hora,
                                 cierre: cerrarRuta,
+                                dia: dayname,
                             }
+                            toPrint(ObjToPrint[cont]);
                             break;
-                        } else if ((hora >= finDeSemana.surNorte[i].inicio && hora <= finDeSemana.surNorte[i].finaliza)) {
+                        // De sur a norte
+                        } else if ((hora >= finDeSemana.surNorte[i].inicio && hora <= finDeSemana.surNorte[i].finaliza && (x===2))) {
                             cerrarRuta = (start.add(parseInt(finDeSemana.surNorte[i].horas), 'hour')).hour() + ":" + (start.add(2, 'hour')).minute();
                             info.innerHTML = `Ruta aerea sur norte abierta a las ${hora}`;
                             console.log(`<br/> Ruta aerea abierta a las ${hora}`);
                             ruta = true;
                             ObjToPrint[cont] = {
-                                sentido: "norte - sur",
+                                sentido: "sur - norte",
                                 apertura: hora,
                                 cierre: cerrarRuta,
+                                dia: dayname,
                             }
+                            toPrint(ObjToPrint[cont]);
                             break;
                         }
                     }
@@ -234,63 +241,40 @@ const simular = (e) => {
                 }
                 else {
 
-         
-                    if (hora === cerrarRuta) {
+                    //Si la ruta esta abierta y la hora de cierre es igual a la hora actual, se cierra la ruta.
 
+                    if (hora === cerrarRuta) {
                         info.innerHTML = `Ruta aerea cerrada a las ${hora}`;
                         despejarRuta = (start.add(2, 'hour')).hour() + ":" + (start.add(2, 'hour')).minute();
-                        toPrint(ObjToPrint[cont]);
-
                     }
+
+                    //Si la ruta esta cerrada, y la hora de despeje es igual a la hora actual, se despeja la ruta.
 
                     if (hora === despejarRuta) {
                         info.innerHTML = `Ruta Despejada`;
                         ruta = false;
                         cont++;
                     }
-
                 }
-
-
-
             }
-
-
-
-            // console.log(hora);
-
-
         }
 
 
-    }
-        , 100);
+    }  , 100);
 
 
 }
 
+
+//Funcion para mostrar en pantalla los datos de la ruta.
 
 const toPrint = (obj) => {
 
     document.getElementById("result").insertRow(-1).innerHTML = `
-    <th scope="row">${cont}</th>
+    <th scope="row">${obj.dia}</th>
     <td>${obj.apertura}</td>
     <td>${obj.cierre}</td>
     <td>${obj.sentido}</td>`
-
-
-}
-
-const toPrinta = (e) => {
-    e.preventDefault();
-    document.getElementById("result").insertRow(-1).innerHTML = `
-    <th scope="row">${1}</th>
-    <td>jaja}</td>
-    <td>salu2}</td>
-    <td>genial}</td>`
-
-
 }
 
 
-{/*  */ }
