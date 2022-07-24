@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,69 +8,63 @@
     <title>Simulacion</title>
     <link rel="stylesheet" href="./css/styles.css">
     <!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.4/dayjs.min.js" integrity="sha512-XZSHSEFj4QeE0G4pwy4tToyAhF2VXoEcF9CP0t1PSZMP2XHhEEB9PjM9knsdzcEKbi6GRMazdt8tJadz0JTKIQ==" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.4/dayjs.min.js"
+        integrity="sha512-XZSHSEFj4QeE0G4pwy4tToyAhF2VXoEcF9CP0t1PSZMP2XHhEEB9PjM9knsdzcEKbi6GRMazdt8tJadz0JTKIQ=="
+        crossorigin="anonymous"></script>
 </head>
+
 <body>
 
     <div class="container">
-        <h1 class="title">Simulacion de Autopista dinamica</h1>
+        <h1 class="title">Simulacion de carretera</h1>
         <div>
             <form class="form" onsubmit="simular(event)">
-                <div class="input-group">
+                <div style="flex-direction: column;" class="input-group d-flex mx-auto text-center">
                     <div class="input-container">
                         <label>Fecha y hora de inicio</label>
-                        <input type="datetime-local" id="start-date"  />
-   
+                        <input type="datetime-local" id="start-date" required />
                     </div>
-    
+                    <br>
                     <div class="input-container">
                         <label>Fecha y hora Final</label>
-                        <input type="datetime-local" id="end-date"  />
+                        <input type="datetime-local" id="end-date" required />
 
                     </div>
-    
+                    <br>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary">Iniciar</button>
+                    <button type="submit" class="mx-auto text-center d-block btn btn-primary">Iniciar</button>
                 </div>
             </form>
         </div>
-        <h4>Tiempo: <span id="timer"></span></h4>
+        <h4>Tiempo de Simulacion: <span id="timer"></span></h4>
         <h4>Dia: <span id="day"></span></h4>
+        <h4>info: <span id="info"></span></h4>
 
-        
-        <!-- <div>
-            <button onclick="simulacion()" class="btn btn-primary">Iniciar</button>
-        </div>
-         -->
 
-        
-        <!-- <div>
-            <h4>Dia de la Semana: <span id="week-day"></span></h4>
-            <h4>Tiempo: <span id="time"></span></h4>
-            <div class="container-infomation">
-                <div>
-                    <h4>Hora Pico Norte Sur</h4>
-                    <div class="container-labels" id="ns-info">
-                        <span>Horario no Concurrido</span>
-                    </div>
-                </div>
-                <div>
-                    <h4>Via Area</h4>
-                    <span id="via-info">Status: No habilitado</span>
-                </div>
-                <div>
-                    <h4>Hora Pico Sur Norte</h4>
-                    <div class="container-labels" id="sn-info">
-                        <span>Horario no Concurrido</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <script src="./js/index.js"></script>
+        <h4 class="mx-auto text-center">Informacion ruta area</h4>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Hora de apertura</th>
+                    <th scope="col">Hora de cierre</th>
+                    <th scope="col">Sentido</th>
+                </tr>
+            </thead>
+            <tbody id="result">
+                <tr>
+
+                </tr>
+            </tbody>
+        </table>
+        <script src="./js/index.js"></script>
 </body>
+
 </html>
