@@ -103,6 +103,7 @@ const finDeSemana = {
 
 const simular = (e) => {
     e.preventDefault();
+    clearInterval(timerInterval);
 
 
     //Obtener los datos de los inputs
